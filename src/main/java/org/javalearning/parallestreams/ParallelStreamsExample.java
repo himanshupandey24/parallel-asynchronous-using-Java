@@ -33,6 +33,13 @@ public class ParallelStreamsExample {
 
     }
 
+    public List<String> string_toLowerCase(List<String> namesList){
+        return namesList
+                .parallelStream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toList());
+    }
+
     private String transform(String name) {
         CommonUtil.delay(500);
         return name.length() + " - " + name;
