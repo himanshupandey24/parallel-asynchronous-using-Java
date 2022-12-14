@@ -6,20 +6,31 @@ import org.javalearning.util.LoggerUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ParallelStreamsExample {
 
-    private List<String> stringTransformWithStream(List<String> namesList){
+    public List<String> stringTransformWithStream(List<String> namesList){
         return namesList
                 .stream()
                 .map(this::transform)
                 .collect(Collectors.toList());
     }
 
-    private List<String> stringTransformWithParallelStream(List<String> nameList){
+    public List<String> stringTransformWithParallelStream(List<String> nameList){
         return nameList.parallelStream()
                 .map(this::transform)
                 .collect(Collectors.toList());
+    }
+
+    public List<String> stringTransformWithSequentialAndParallel(List<String> namesList, boolean isParallel){
+        Stream<String> namesStream = namesList.stream();
+
+        if(isParallel)
+            namesStream.parallel();
+
+        return namesStream.map(this::transform).collect(Collectors.toList());
+
     }
 
     private String transform(String name) {
@@ -36,7 +47,6 @@ public class ParallelStreamsExample {
         List<String> resultList1 = parallelStreamsExample.stringTransformWithParallelStream(namesList);
 
         CommonUtil.timeTaken();
-
 
         LoggerUtil.log("resultList : " + resultList1);
     }
