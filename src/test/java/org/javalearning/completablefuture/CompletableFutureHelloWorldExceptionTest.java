@@ -33,4 +33,43 @@ class CompletableFutureHelloWorldExceptionTest {
         //then
         assertEquals("WORLD THIRD COMPLETABLE FUTURE CALL", result);
     }
+
+    @Test
+    void helloWorld_3_async_calls_Handle_2() {
+        //given
+        when(helloWorldService.hello()).thenThrow(new RuntimeException("Exception Occurred"));
+        when(helloWorldService.world()).thenThrow(new RuntimeException("Exception Occurred"));
+
+        //when
+        String result = completableFutureHelloWorldException.helloWorld_3_async_calls_Handle();
+
+        //then
+        assertEquals(" THIRD COMPLETABLE FUTURE CALL", result);
+    }
+
+    @Test
+    void helloWorld_3_async_calls_Handle_3() {
+        //given
+        when(helloWorldService.hello()).thenCallRealMethod();
+        when(helloWorldService.world()).thenThrow(new RuntimeException("Exception Occurred"));
+
+        //when
+        String result = completableFutureHelloWorldException.helloWorld_3_async_calls_Handle();
+
+        //then
+        assertEquals(" THIRD COMPLETABLE FUTURE CALL", result);
+    }
+
+    @Test
+    void helloWorld_3_async_calls_Handle_4() {
+        //given
+        when(helloWorldService.hello()).thenCallRealMethod();
+        when(helloWorldService.world()).thenCallRealMethod();
+
+        //when
+        String result = completableFutureHelloWorldException.helloWorld_3_async_calls_Handle();
+
+        //then
+        assertEquals("HELLOWORLD THIRD COMPLETABLE FUTURE CALL", result);
+    }
 }

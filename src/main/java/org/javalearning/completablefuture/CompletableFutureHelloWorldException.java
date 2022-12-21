@@ -34,6 +34,14 @@ public class CompletableFutureHelloWorldException {
                     return result;
                 })
                 .thenCombine(world, (h,w) -> h + w)
+                .handle((result, exception) -> { // this gets invoked for both success and failure
+                    LoggerUtil.log("Result is " + result);
+                    if(exception != null){
+                        LoggerUtil.log("Exception after world is : " +exception.getMessage());
+                        return "";
+                    }
+                    return result;
+                })
                 .thenCombine(completableFuture, (previous, current) -> previous + current)
                 .thenApply(String::toUpperCase)
                 .join();
