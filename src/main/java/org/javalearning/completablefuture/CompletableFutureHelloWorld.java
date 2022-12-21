@@ -1,6 +1,7 @@
 package org.javalearning.completablefuture;
 
 import org.javalearning.service.HelloWorldService;
+import org.javalearning.util.CommonUtil;
 import org.javalearning.util.LoggerUtil;
 
 import java.util.concurrent.CompletableFuture;
@@ -22,6 +23,23 @@ public class CompletableFutureHelloWorld {
         return CompletableFuture.supplyAsync(() -> helloWorldService.helloWorld())
                 .thenApply(String::toUpperCase)
                 .thenApply( s -> s.length() + " - " + s);
+    }
+
+    public String helloWorld_multiple_async_calls(){
+
+        CommonUtil.startTimer();
+
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> this.helloWorldService.hello());
+        CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> this.helloWorldService.world());
+
+        String helloWorld = hello
+                .thenCombine(world, (h, w) -> h + w)
+                .thenApply(String::toUpperCase)
+                .join();
+
+        CommonUtil.timeTaken();
+
+        return helloWorld;
     }
     public static void main(String[] args) {
         HelloWorldService helloWorldService = new HelloWorldService();
