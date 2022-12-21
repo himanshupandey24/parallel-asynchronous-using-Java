@@ -47,6 +47,28 @@ public class ProductServiceUsingCompletableFuture {
 
     }
 
+    public CompletableFuture<Product>  retrieveProductDetailsCf(String productId){
+        stopWatch.start();
+
+        CompletableFuture<ProductInfo> productInfoCompletableFuture  = CompletableFuture
+                .supplyAsync(() -> productInfoService.retrieveProductInfo(productId));
+
+        CompletableFuture<Review> reviewCompletableFuture = CompletableFuture
+                .supplyAsync(() -> reviewService.retrieveReviews(productId));
+
+        CompletableFuture<Product> productCF = productInfoCompletableFuture
+                .thenCombine(
+                        reviewCompletableFuture,
+                        (productInfo, review) -> new Product(productId, productInfo, review)
+                );
+
+        stopWatch.stop();
+        LoggerUtil.log("Total Time Taken : " + stopWatch.getTime());
+
+        return productCF;
+
+    }
+
     public static void main(String[] args) {
         ProductInfoService productInfoService = new ProductInfoService();
         ReviewService reviewService = new ReviewService();
