@@ -94,6 +94,20 @@ public class CompletableFutureHelloWorld {
 
         return helloWorld;
     }
+
+    public CompletableFuture<String> helloWorld_thenCompose(){
+        CommonUtil.startTimer();
+        CompletableFuture<String> helloWorldFuture = CompletableFuture
+                .supplyAsync(() -> this.helloWorldService.hello())
+                .thenCompose((previous) -> this.helloWorldService.worldFuture(previous))
+                .thenApply(String::toUpperCase);
+
+        CommonUtil.timeTaken();
+
+        return helloWorldFuture;
+    }
+
+
     public static void main(String[] args) {
         HelloWorldService helloWorldService = new HelloWorldService();
         CompletableFuture.supplyAsync(helloWorldService::helloWorld)

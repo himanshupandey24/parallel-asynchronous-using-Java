@@ -51,4 +51,11 @@ class CompletableFutureHelloWorldTest {
         String result = completableFutureHelloWorld.helloWorld_4_async_calls();
         assertEquals("HELLOWORLD THIRD COMPLETABLE FUTURE CALL BYE!", result);
     }
+
+    @Test
+    void helloWorld_thenCompose(){
+        CompletableFuture<String> completableFuture = completableFutureHelloWorld.helloWorld_thenCompose();
+
+        completableFuture.thenAccept(s -> assertEquals("HELLO WORLD!", s)).join();
+    }
 }
