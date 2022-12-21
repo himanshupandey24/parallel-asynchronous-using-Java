@@ -1,6 +1,7 @@
 package org.javalearning.completablefuture;
 
 import org.javalearning.domain.Product;
+import org.javalearning.service.InventoryService;
 import org.javalearning.service.ProductInfoService;
 import org.javalearning.service.ReviewService;
 import org.javalearning.util.CommonUtil;
@@ -14,9 +15,10 @@ class ProductServiceUsingCompletableFutureTest {
 
     private ProductInfoService productInfoService = new ProductInfoService();
     private ReviewService reviewService = new ReviewService();
+    private InventoryService inventoryService = new InventoryService();
 
     private ProductServiceUsingCompletableFuture productServiceUsingCompletableFuture =
-            new ProductServiceUsingCompletableFuture(productInfoService, reviewService);
+            new ProductServiceUsingCompletableFuture(productInfoService, reviewService, inventoryService);
 
     @Test
     void retrieveProductDetails() {
@@ -48,5 +50,33 @@ class ProductServiceUsingCompletableFutureTest {
             assertNotNull(product.getReview());
         }).join();
 
+    }
+
+    @Test
+    void retrieveProductDetailsWithInventory(){
+        String productId = "ABC123";
+
+        //when
+        Product product = productServiceUsingCompletableFuture.retrieveProductDetailsWithInventory(productId);
+
+        //then
+        assertNotNull(product);
+        assertTrue(product.getProductInfo().getProductOptions().size()>0);
+        product.getProductInfo().getProductOptions().forEach(productOption -> assertNotNull(productOption.getInventory()));
+        assertNotNull(product.getReview());
+    }
+
+    @Test
+    void retrieveProductDetailsWithInventory_Approach2(){
+        String productId = "ABC123";
+
+        //when
+        Product product = productServiceUsingCompletableFuture.retrieveProductDetailsWithInventory_Approach2(productId);
+
+        //then
+        assertNotNull(product);
+        assertTrue(product.getProductInfo().getProductOptions().size()>0);
+        product.getProductInfo().getProductOptions().forEach(productOption -> assertNotNull(productOption.getInventory()));
+        assertNotNull(product.getReview());
     }
 }
