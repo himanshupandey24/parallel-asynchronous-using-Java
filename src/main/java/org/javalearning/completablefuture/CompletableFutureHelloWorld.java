@@ -41,6 +41,59 @@ public class CompletableFutureHelloWorld {
 
         return helloWorld;
     }
+
+
+    public String helloWorld_3_async_calls(){
+
+        CommonUtil.startTimer();
+
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> this.helloWorldService.hello());
+        CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> this.helloWorldService.world());
+        CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
+            CommonUtil.delay(1000);
+            return "Third Completable Future Call";
+        });
+
+        String helloWorld = hello
+                .thenCombine(world, (h,w) -> h + w)
+                .thenCombine(completableFuture, (previous, current) -> previous + current)
+                .thenApply(String::toUpperCase)
+                .join();
+
+        CommonUtil.timeTaken();
+
+        return helloWorld;
+    }
+
+
+    public String helloWorld_4_async_calls(){
+
+        CommonUtil.startTimer();
+
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> this.helloWorldService.hello());
+        CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> this.helloWorldService.world());
+        CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
+            CommonUtil.delay(1000);
+            return " Third Completable Future Call";
+        });
+
+        CompletableFuture<String> completableFuture1 = CompletableFuture.supplyAsync(() -> {
+            CommonUtil.delay(1000);
+            return " Bye!";
+        });
+
+
+        String helloWorld = hello
+                .thenCombine(world, (h,w) -> h + w)
+                .thenCombine(completableFuture, (previous, current) -> previous + current)
+                .thenCombine(completableFuture1, (previous, current) -> previous + current)
+                .thenApply(String::toUpperCase)
+                .join();
+
+        CommonUtil.timeTaken();
+
+        return helloWorld;
+    }
     public static void main(String[] args) {
         HelloWorldService helloWorldService = new HelloWorldService();
         CompletableFuture.supplyAsync(helloWorldService::helloWorld)

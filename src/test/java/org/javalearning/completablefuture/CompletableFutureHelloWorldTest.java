@@ -39,4 +39,16 @@ class CompletableFutureHelloWorldTest {
         String result = completableFutureHelloWorld.helloWorld_multiple_async_calls();
         assertEquals("HELLOWORLD", result);
     }
+
+    @Test
+    void helloWorld_3_async_calls(){
+        String result = completableFutureHelloWorld.helloWorld_3_async_calls();
+        assertEquals("HELLOWORLDTHIRD COMPLETABLE FUTURE CALL", result);
+    }
+
+    @Test
+    void helloWorld_4_async_calls(){
+        String result = completableFutureHelloWorld.helloWorld_4_async_calls();
+        assertEquals("HELLOWORLD THIRD COMPLETABLE FUTURE CALL BYE!", result);
+    }
 }
