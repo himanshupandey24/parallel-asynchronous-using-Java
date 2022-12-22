@@ -137,4 +137,34 @@ class CompletableFutureHelloWorldExceptionTest {
         //then
         assertEquals(" THIRD COMPLETABLE FUTURE CALL", result);
     }
+
+    @Test
+    void helloWorld_3_async_calls_whenComplete(){
+        //given
+        when(helloWorldService.hello()).thenCallRealMethod();
+        when(helloWorldService.world()).thenCallRealMethod();
+
+        //when
+        String result = completableFutureHelloWorldException.helloWorld_3_async_calls_whenComplete();
+
+        //then
+        String expectedResult = "HELLOWORLD THIRD COMPLETABLE FUTURE CALL";
+        assertEquals(expectedResult, result);
+    }
+
+    @Test
+    void helloWorld_3_async_calls_whenComplete_1(){
+        //given
+        when(helloWorldService.hello()).thenThrow(new RuntimeException("Exception Occurred"));
+        when(helloWorldService.world()).thenCallRealMethod();
+
+        //when
+        String result = completableFutureHelloWorldException.helloWorld_3_async_calls_whenComplete();
+
+        //then
+        String expectedResult = " THIRD COMPLETABLE FUTURE CALL";
+        assertEquals(expectedResult, result);
+    }
+
+
 }
