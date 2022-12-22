@@ -72,4 +72,69 @@ class CompletableFutureHelloWorldExceptionTest {
         //then
         assertEquals("HELLOWORLD THIRD COMPLETABLE FUTURE CALL", result);
     }
+
+    @Test
+    void helloWorld_3_async_calls_Exceptionally(){
+        //given
+        when(helloWorldService.hello()).thenCallRealMethod();
+        when(helloWorldService.world()).thenCallRealMethod();
+
+        //when
+        String result = completableFutureHelloWorldException.helloWorld_3_async_calls_Exceptionally();
+
+        //then
+        assertEquals("HELLOWORLD THIRD COMPLETABLE FUTURE CALL", result);
+    }
+
+    @Test
+    void helloWorld_3_async_calls_Exceptionally_1(){
+        //given
+        when(helloWorldService.hello()).thenCallRealMethod();
+        when(helloWorldService.world()).thenCallRealMethod();
+
+        //when
+        String result = completableFutureHelloWorldException.helloWorld_3_async_calls_Exceptionally();
+
+        //then
+        assertEquals("HELLOWORLD THIRD COMPLETABLE FUTURE CALL", result);
+    }
+
+    @Test
+    void helloWorld_3_async_calls_Exceptionally_2(){
+        //given
+        when(helloWorldService.hello()).thenThrow(new RuntimeException("Exception Occurred"));
+        when(helloWorldService.world()).thenThrow(new RuntimeException("Exception Occurred"));
+
+        //when
+        String result = completableFutureHelloWorldException.helloWorld_3_async_calls_Exceptionally();
+
+        //then
+        assertEquals(" THIRD COMPLETABLE FUTURE CALL", result);
+    }
+
+    @Test
+    void helloWorld_3_async_calls_Exceptionally_3(){
+        //given
+        when(helloWorldService.hello()).thenThrow(new RuntimeException("Exception Occurred"));
+        when(helloWorldService.world()).thenCallRealMethod();
+
+        //when
+        String result = completableFutureHelloWorldException.helloWorld_3_async_calls_Exceptionally();
+
+        //then
+        assertEquals("WORLD THIRD COMPLETABLE FUTURE CALL", result);
+    }
+
+    @Test
+    void helloWorld_3_async_calls_Exceptionally_4(){
+        //given
+        when(helloWorldService.hello()).thenCallRealMethod();
+        when(helloWorldService.world()).thenThrow(new RuntimeException("Exception Occurred"));
+
+        //when
+        String result = completableFutureHelloWorldException.helloWorld_3_async_calls_Exceptionally();
+
+        //then
+        assertEquals(" THIRD COMPLETABLE FUTURE CALL", result);
+    }
 }
