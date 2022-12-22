@@ -110,7 +110,12 @@ public class ProductServiceUsingCompletableFuture {
                         });
 
         CompletableFuture<Review> reviewCompletableFuture =
-                CompletableFuture.supplyAsync(() -> reviewService.retrieveReviews(productId));
+                CompletableFuture.supplyAsync(() -> reviewService.retrieveReviews(productId))
+                        .exceptionally(exception -> {
+                            LoggerUtil.log("Handle the exception in review service : " + exception.getMessage());
+                            return Review.builder().noOfReviews(0).overallRating(0.0)
+                                    .build();
+                        });
 
         Product product = productInfoCompletableFuture
                 .thenCombine(reviewCompletableFuture,(productInfo, review) -> new Product(productId, productInfo, review))

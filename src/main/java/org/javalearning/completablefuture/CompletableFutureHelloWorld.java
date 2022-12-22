@@ -5,6 +5,8 @@ import org.javalearning.util.CommonUtil;
 import org.javalearning.util.LoggerUtil;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CompletableFutureHelloWorld {
 
@@ -65,6 +67,65 @@ public class CompletableFutureHelloWorld {
         return helloWorld;
     }
 
+    public String helloWorld_3_async_calls_log(){
+
+        CommonUtil.startTimer();
+
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> this.helloWorldService.hello());
+        CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> this.helloWorldService.world());
+        CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
+            CommonUtil.delay(1000);
+            return "Third Completable Future Call";
+        });
+
+        String helloWorld = hello
+                .thenCombine(world, (h,w) -> { LoggerUtil.log("thenCombine h/w");
+                    return h + w;
+                })
+                .thenCombine(completableFuture, (previous, current) -> { LoggerUtil.log("thenCombine previous/current");
+                    return previous + current;
+                })
+                .thenApply(s -> {
+                    LoggerUtil.log("thenApply");
+                    return s.toUpperCase();
+                })
+                .join();
+
+        CommonUtil.timeTaken();
+
+        return helloWorld;
+    }
+
+    public String helloWorld_3_async_calls_customThreadPool(){
+
+        CommonUtil.startTimer();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        CompletableFuture<String> hello = CompletableFuture.supplyAsync(this.helloWorldService::hello, executorService);
+        CompletableFuture<String> world = CompletableFuture.supplyAsync(this.helloWorldService::world, executorService);
+        CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
+            CommonUtil.delay(1000);
+            return "Third Completable Future Call";
+        }, executorService);
+
+        String helloWorld = hello
+                .thenCombine(world, (h,w) -> { LoggerUtil.log("thenCombine h/w");
+                    return h + w;
+                })
+                .thenCombine(completableFuture, (previous, current) -> { LoggerUtil.log("thenCombine previous/current");
+                    return previous + current;
+                })
+                .thenApply(s -> {
+                    LoggerUtil.log("thenApply");
+                    return s.toUpperCase();
+                })
+                .join();
+
+        CommonUtil.timeTaken();
+
+        return helloWorld;
+    }
 
     public String helloWorld_4_async_calls(){
 
@@ -106,7 +167,6 @@ public class CompletableFutureHelloWorld {
 
         return helloWorldFuture;
     }
-
 
     public static void main(String[] args) {
         HelloWorldService helloWorldService = new HelloWorldService();
