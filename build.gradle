@@ -20,6 +20,18 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     implementation 'org.apache.commons:commons-lang3:3.12.0'
 
+    //webclient dependencies
+    implementation 'org.springframework:spring-webflux:6.0.3'
+    implementation 'io.projectreactor.netty:reactor-netty:1.0.24'
+
+    //jackson dependencies
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.14.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.14.1'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.14.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.14.1'
+
     testImplementation('org.junit.jupiter:junit-jupiter:5.9.1')
     testImplementation group: 'org.mockito', name: 'mockito-core', version: '4.8.1'
     testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '4.8.1'
